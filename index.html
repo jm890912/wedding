@@ -212,13 +212,13 @@ body {
   <div class="door left" id="leftDoor"></div>
   <div class="door right" id="rightDoor"></div>
 </div>
-<div class="door-text" onclick="openDoor()">2026 Hot News</div>
+<div class="door-text" onclick="openDoor()">입장.</div>
 
 <div class="container" id="main">
 
   <!-- 사건은 다가와 오오예에 -->
   <div class="hero" data-aos="fade-up">
-    <video id="mainVideo" src="wmremove-transformed_1.mp4" playsinline></video>
+    <video id="mainVideo" src="wmremove-transformed_1.mp4" playsinline style="opacity:0;"></video>
   </div>
 
   <div class="title" data-aos="fade-up">안은지 ♥ 한재명</div>
@@ -268,6 +268,11 @@ body {
 <script>
 AOS.init({ duration: 1000 });
 
+const video = document.getElementById("mainVideo");
+
+video.addEventListener("loadeddata", () => {
+  video.style.opacity = 1;
+});
 // D-day 변경
 function updateDday() {
   const wedding = new Date('2026-05-09T00:00:00');
@@ -355,7 +360,7 @@ function openDoor() {
     const video = document.getElementById("mainVideo");
     video.play();
 
-  }, 1200);
+  }, 600);
 }
 
 function openModal(src) {
