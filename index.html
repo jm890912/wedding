@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Wedding Invitation</title>
+<title>Wedding Notice</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;500&display=swap" rel="stylesheet">
 <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
@@ -84,6 +84,31 @@ body {
   background: #ddd;
 }
 .info { line-height: 1.8; font-size: 15px; }
+
+/* D-day */
+.dday-wrap {
+  margin: 20px auto 10px;
+  display: inline-block;
+  text-align: center;
+}
+.dday-label {
+  font-size: 15px;
+  color: #aaa;
+  letter-spacing: 2px;
+  margin-bottom: 6px;
+}
+.dday-badge {
+  font-size: 32px;
+  font-weight: 500;
+  color: #c8a97e;
+  letter-spacing: 1px;
+}
+.dday-sub {
+  font-size: 18px;
+  color: #555;
+  margin-top: 4px;
+}
+
 .gallery-slider { margin-top: 40px; overflow: hidden; }
 .gallery-track {
   display: flex;
@@ -194,8 +219,11 @@ body {
   </div>
 
   <div class="title" data-aos="fade-up">안은지 ♥ 한재명</div>
+ 
+ <div class="info-wrap" id="infowrap">
   <div class="subtitle" data-aos="fade-up">우리 결혼해요</div>
   <div class="divider"></div>
+
   <div class="info">
 내리는 비를 막아줄 수는 없지만<br>
 비가 오면 항상 함께 맞아줄게<br>
@@ -208,8 +236,13 @@ body {
 따뜻한 관심과 응원 부탁드립니다.<br>
 누구보다 잘 살겠습니다.<br>
 <br>
-    2026년 5월 9일 토요일 오후 2시<br>
-    <br><br>
+  </div>
+</div>
+  <!-- D-day -->
+  <div class="dday-wrap" id="ddayWrap" data-aos="fade-up" style="display:none;">
+    <div class="dday-label" id="weddingLabel">WEDDING DAY</div>
+    <div class="dday-badge" id="ddayBadge"></div>
+    <div class="dday-sub" id="weddingDate">2026년 5월 9일 토요일</div>
   </div>
 
   <div class="gallery-slider" id="gallerySlider">
@@ -232,13 +265,42 @@ body {
 <script>
 AOS.init({ duration: 1000 });
 
+// D-day 계산
+function updateDday() {
+  const wedding = new Date('2026-05-09T00:00:00');
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  wedding.setHours(0, 0, 0, 0);
+
+  const diff = Math.round((wedding - today) / (1000 * 60 * 60 * 24));
+  const wrap = document.getElementById('ddayWrap');
+  const badge = document.getElementById('ddayBadge');
+
+  if (diff > 0) {
+    badge.textContent = `D - ${diff}`;
+    wrap.style.display = 'inline-block';
+  } else if (diff === 0) {
+    badge.textContent = `D - DAY`;
+    wrap.style.display = 'inline-block';
+  } else {
+    const weddinglabel = document.getElementById('weddingLabel');
+    weddinglabel.textContent = `우리결혼했어요♥`;
+    const infowrap = document.getElementById('infowrap');
+    infowrap.style.display = 'none';
+    const weddingDate = document.getElementById('weddingDate');
+    weddingDate.style.display = 'none';
+    badge.textContent = `D + ${-diff}`;
+    wrap.style.display = 'inline-block';
+  }
+}
+
+updateDday();
+
 const images = [
-  "https://picsum.photos/400/400?random=1",
-  "https://picsum.photos/400/400?random=2",
-  "https://picsum.photos/400/400?random=3",
-  "https://picsum.photos/400/400?random=4",
-  "https://picsum.photos/400/400?random=5",
-  "https://picsum.photos/400/400?random=6",
+  "images/img_1.jpeg",
+  "images/img_2.jpeg",
+  "images/img_3.jpeg",
+  "images/img_4.jpeg",
 ];
 
 let modalIndex = 0;
