@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wedding Invitation</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;500&display=swap" rel="stylesheet">
+<link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
+
+<style>
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: 'Noto Serif KR', serif;
+  background: #f8f5f2;
+  color: #333;
+}
+.door-wrap {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  z-index: 9999;
+  display: flex;
+  perspective: 1200px;
+}
+.door {
+  width: 50%;
+  height: 100%;
+  background: #e8dfd8;
+  transition: transform 1.2s ease;
+}
+.left { transform-origin: left; }
+.right { transform-origin: right; }
+.door.open.left { transform: rotateY(-100deg); }
+.door.open.right { transform: rotateY(100deg); }
+.door-text {
+  position: fixed;
+  width: 100%;
+  top: 50%;
+  text-align: center;
+  transform: translateY(-50%);
+  z-index: 10000;
+  font-size: 18px;
+  color: #555;
+  cursor: pointer;
+}
+.container {
+  max-width: 420px;
+  margin: auto;
+  background: white;
+  padding: 30px 20px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+  text-align: center;
+  opacity: 0;
+  transition: opacity 1s ease;
+}
+.container.show { opacity: 1; }
+
+/* 히어로 영상 */
+.hero {
+  overflow: hidden;
+  width: 100%;
+  border-radius: 12px;
+  background: #f8f5f2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.hero video {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 12px;
+  object-fit: contain;
+}
+
+.title { margin-top: 30px; font-size: 26px; }
+.subtitle { margin-top: 10px; font-size: 15px; color: #777; }
+.divider {
+  margin: 30px auto;
+  width: 40px;
+  height: 1px;
+  background: #ddd;
+}
+.info { line-height: 1.8; font-size: 15px; }
+.gallery-slider { margin-top: 40px; overflow: hidden; }
+.gallery-track {
+  display: flex;
+  gap: 8px;
+  will-change: transform;
+}
+.gallery-track img {
+  width: calc(50% - 4px);
+  flex-shrink: 0;
+  border-radius: 6px;
+  cursor: pointer;
+  object-fit: cover;
+  aspect-ratio: 1;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-user-drag: none;
+}
+.modal {
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.9);
+  justify-content: center;
+  align-items: center;
+  z-index: 99999;
+  flex-direction: column;
+  gap: 16px;
+}
+.modal-img-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+.modal img {
+  width: 90%;
+  max-width: 500px;
+  border-radius: 8px;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-user-drag: none;
+  transition: opacity 0.3s ease;
+}
+.modal-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255,255,255,0.2);
+  border: none;
+  border-radius: 50%;
+  width: 44px; height: 44px;
+  font-size: 26px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  transition: background 0.2s;
+  line-height: 1;
+}
+.modal-btn:hover { background: rgba(255,255,255,0.35); }
+.modal-btn:disabled { opacity: 0.2; cursor: default; }
+.modal-btn.prev { left: 16px; }
+.modal-btn.next { right: 16px; }
+.modal-close {
+  position: absolute;
+  top: 16px; right: 20px;
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 32px;
+  cursor: pointer;
+  line-height: 1;
+  opacity: 0.7;
+}
+.modal-close:hover { opacity: 1; }
+.modal-dots { display: flex; justify-content: center; gap: 8px; }
+.modal-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.35);
+  cursor: pointer;
+  transition: background 0.3s;
+}
+.modal-dot.active { background: #fff; }
+.modal-counter {
+  color: rgba(255,255,255,0.6);
+  font-size: 13px;
+  font-family: 'Noto Serif KR', serif;
+}
+</style>
+</head>
+<body>
+
+<div class="door-wrap" id="doorWrap">
+  <div class="door left" id="leftDoor"></div>
+  <div class="door right" id="rightDoor"></div>
+</div>
+<div class="door-text" onclick="openDoor()">2026핫뉴쓰</div>
+
+<div class="container" id="main">
+
+  <!-- 히어로: 업로드 영상 -->
+  <div class="hero" data-aos="fade-up">
+    <video src="wmremove-transformed_1.mp4" autoplay loop muted playsinline></video>
+  </div>
+
+  <div class="title" data-aos="fade-up">안은지 ♥ 한재명</div>
+  <div class="subtitle" data-aos="fade-up">우리 결혼해요</div>
+  <div class="divider"></div>
+  <div class="info">
+내리는 비를 막아줄 수는 없지만<br>
+비가 오면 항상 함께 맞아줄게<br>
+힘든 일이 있어도 기쁜 일이 있어도 함께할게<br>
+물론 모든 걸 다 줄 수는 없지만<br>
+작은 행복에 미소 짓게 해줄게<br>
+무슨 일이 있어도 너의 편이 돼줄게 언제까지나<br>
+<div class="divider"></div>
+결혼은 저희 뜻에 따라 간소하게 진행하게 되었습니다.<br>
+따뜻한 관심과 응원 부탁드립니다.<br>
+누구보다 잘 살겠습니다.<br>
+<br>
+    2026년 5월 9일 토요일 오후 2시<br>
+    <br><br>
+  </div>
+
+  <div class="gallery-slider" id="gallerySlider">
+    <div class="gallery-track" id="galleryTrack"></div>
+  </div>
+</div>
+
+<div class="modal" id="modal">
+  <button class="modal-close" onclick="closeModal()">&#215;</button>
+  <div class="modal-img-wrap">
+    <button class="modal-btn prev" id="modalPrev" onclick="modalSlide(-1)">&#8249;</button>
+    <img id="modalImg">
+    <button class="modal-btn next" id="modalNext" onclick="modalSlide(1)">&#8250;</button>
+  </div>
+  <div class="modal-dots" id="modalDots"></div>
+  <div class="modal-counter" id="modalCounter"></div>
+</div>
+
+<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+<script>
+AOS.init({ duration: 1000 });
+
+const images = [
+  "https://picsum.photos/400/400?random=1",
+  "https://picsum.photos/400/400?random=2",
+  "https://picsum.photos/400/400?random=3",
+  "https://picsum.photos/400/400?random=4",
+  "https://picsum.photos/400/400?random=5",
+  "https://picsum.photos/400/400?random=6",
+];
+
+let modalIndex = 0;
+let autoSlideOffset = 0;
+let autoSlideRAF = null;
+const autoSlideSpeed = 0.6;
+
+function buildGallery() {
+  const track = document.getElementById("galleryTrack");
+  track.innerHTML = "";
+  [...images, ...images, ...images].forEach((src) => {
+    const img = document.createElement("img");
+    img.src = src;
+    img.onclick = () => openModal(src);
+    track.appendChild(img);
+  });
+  startAutoSlide();
+}
+
+function startAutoSlide() {
+  const track = document.getElementById("galleryTrack");
+  function step() {
+    const firstImg = track.children[0];
+    if (!firstImg) return;
+    const imgWidth = firstImg.offsetWidth + 8;
+    const singleSetWidth = imgWidth * images.length;
+    autoSlideOffset += autoSlideSpeed;
+    if (autoSlideOffset >= singleSetWidth) autoSlideOffset -= singleSetWidth;
+    track.style.transform = `translateX(-${autoSlideOffset}px)`;
+    autoSlideRAF = requestAnimationFrame(step);
+  }
+  if (autoSlideRAF) cancelAnimationFrame(autoSlideRAF);
+  autoSlideRAF = requestAnimationFrame(step);
+}
+
+window.addEventListener("resize", () => { autoSlideOffset = 0; });
+
+function openDoor() {
+  document.getElementById("leftDoor").classList.add("open");
+  document.getElementById("rightDoor").classList.add("open");
+  setTimeout(() => {
+    document.getElementById("doorWrap").style.display = "none";
+    document.querySelector(".door-text").style.display = "none";
+    document.getElementById("main").classList.add("show");
+  }, 1200);
+}
+
+function openModal(src) {
+  const idx = images.indexOf(src);
+  modalIndex = idx >= 0 ? idx : 0;
+  renderModal();
+  document.getElementById("modal").style.display = "flex";
+  const dotsEl = document.getElementById("modalDots");
+  dotsEl.innerHTML = "";
+  images.forEach((_, i) => {
+    const dot = document.createElement("div");
+    dot.className = "modal-dot" + (i === modalIndex ? " active" : "");
+    dot.onclick = (e) => { e.stopPropagation(); goToModal(i); };
+    dotsEl.appendChild(dot);
+  });
+}
+
+function renderModal() {
+  const img = document.getElementById("modalImg");
+  img.style.opacity = 0;
+  img.src = images[modalIndex];
+  img.onload = () => { img.style.opacity = 1; };
+  document.getElementById("modalCounter").textContent = `${modalIndex + 1} / ${images.length}`;
+  document.getElementById("modalPrev").disabled = modalIndex === 0;
+  document.getElementById("modalNext").disabled = modalIndex === images.length - 1;
+  document.querySelectorAll(".modal-dot").forEach((d, i) => {
+    d.classList.toggle("active", i === modalIndex);
+  });
+}
+
+function modalSlide(dir) {
+  modalIndex = Math.max(0, Math.min(modalIndex + dir, images.length - 1));
+  renderModal();
+}
+
+function goToModal(index) { modalIndex = index; renderModal(); }
+function closeModal() { document.getElementById("modal").style.display = "none"; }
+
+document.getElementById("modal").addEventListener("click", function(e) {
+  if (e.target === this) closeModal();
+});
+document.addEventListener("keydown", (e) => {
+  if (document.getElementById("modal").style.display === "flex") {
+    if (e.key === "ArrowLeft") modalSlide(-1);
+    if (e.key === "ArrowRight") modalSlide(1);
+    if (e.key === "Escape") closeModal();
+  }
+});
+let touchStartX = 0;
+document.getElementById("modal").addEventListener("touchstart", (e) => {
+  touchStartX = e.touches[0].clientX;
+});
+document.getElementById("modal").addEventListener("touchend", (e) => {
+  const diff = touchStartX - e.changedTouches[0].clientX;
+  if (Math.abs(diff) > 50) modalSlide(diff > 0 ? 1 : -1);
+});
+
+window.addEventListener("load", buildGallery);
+</script>
+</body>
+</html>
