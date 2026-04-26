@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta property="og:type" content="website">
 <meta property="og:title" content="[재명♥은지] Wedding Notice">
 <meta property="og:description" content="저희 결혼합니다. 따뜻한 마음으로 축하해주세요.">
@@ -181,7 +181,7 @@ body { margin: 0; font-family: 'Noto Serif KR', serif; background: #f8f5f2; colo
   <div class="door left" id="leftDoor"></div>
   <div class="door right" id="rightDoor"></div>
 </div>
-<div class="door-text" onclick="openDoor()">입장.</div>
+<div class="door-text" onclick="openDoor()">저희의 시작에 함께해 주세요</div>
 
 <div class="container" id="main">
   <div class="hero" data-aos="fade-up">
@@ -194,16 +194,17 @@ body { margin: 0; font-family: 'Noto Serif KR', serif; background: #f8f5f2; colo
     <div class="subtitle">우리 결혼해요</div>
     <div class="divider"></div>
     <div class="info">
-      내리는 비를 막아줄 수는 없지만<br>
-      비가 오면 항상 함께 맞아줄게<br>
-      힘든 일이 있어도 기쁜 일이 있어도 함께할게<br>
-      물론 모든 걸 다 줄 수는 없지만<br>
-      작은 행복에 미소 짓게 해줄게<br>
-      무슨 일이 있어도 너의 편이 돼줄게 언제까지나<br>
-      <br>
-      결혼은 저희 뜻에 따라 간소하게 진행하게 되었습니다.<br>
-      따뜻한 관심과 응원 부탁드립니다.<br>
-      누구보다 잘 살겠습니다.
+    안녕하세요.<br>
+    저희 두 사람, 3년의 시간을 함께하며<br>
+    서로에게 가장 소중한 사람임을 깨닫고,<br>
+    이제 부부의 연을 맺습니다.<br><br>
+
+    결혼식은 따로 진행하지 않고<br>
+    가족들과 조용히 첫걸음을 내딛기로 했습니다.<br><br>
+
+    직접 모시지 못해 송구한 마음 전하며,<br>
+    보내주시는 따뜻한 마음 깊이 간직하겠습니다.<br><br>
+    재명♥은지 드림
     </div>
   </div>
 
@@ -231,9 +232,9 @@ body { margin: 0; font-family: 'Noto Serif KR', serif; background: #f8f5f2; colo
         <!-- 여기 좀 더 고민 -->
         <div class="account-card-title">마음전하실 곳</div>
         <div class="account-person">신랑 한재명</div>
-        <div class="account-number" id="accountGroom">신한은행 110-123-456789</div>
+        <div class="account-number" id="accountGroom">신한은행 110-238-106268</div>
         <div class="account-person">신부 안은지</div>
-        <div class="account-number" id="accountBride">카카오뱅크 3333-01-1234567</div>
+        <div class="account-number" id="accountBride">카카오뱅크 3333-01-6849995</div>
         <button class="copy-btn" onclick="copyAccount('groom')">신랑 계좌 복사</button>
         <button class="copy-btn" onclick="copyAccount('bride')">신부 계좌 복사</button>
       </div>
@@ -259,7 +260,7 @@ body { margin: 0; font-family: 'Noto Serif KR', serif; background: #f8f5f2; colo
 <script>
 AOS.init({ duration: 1000 });
 
-const images = ["images/img_1.jpeg", "images/img_2.jpeg", "images/img_3.jpeg", "images/img_4.jpeg"];
+const images = ["images/1_1.jpg", "images/1_2.jpg", "images/1_3.jpg", "images/1_5.jpg", "images/1_7.jpg", "images/1_6.jpg", "images/1_8.jpg", "images/1_9.jpg"];
 let modalIndex = 0;
 let autoSlideOffset = 0;
 let autoSlideRAF = null;
@@ -272,7 +273,7 @@ let done = false;
 let overlapTurn = Math.floor(Math.random() * 3) + 2; 
 let isOverlappedNow = false;
 
-const funnyComments = ["어.. 잠깐만요 🤔", "재고해주십시오. 🙇‍♀️", "정말요...? 😮", "사실 전하고 싶잖아요 😏", "과거를 잊은자에게 미래는 없다...🔫", "근성있으시네요. 😅"];
+const funnyComments = ["어.. 잠깐만요 🤔", "재고해주십시오. 🙇‍♀️", "정말요...? 😮", "사실 전하고 싶잖아요 😏", "과거를 잊은자에게 미래는 없다...🔫", "잘못누르셨죠? 😅"];
 let remainingComments = [...funnyComments];
 
 const btnNo = document.getElementById('btnNo');
