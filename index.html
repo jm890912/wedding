@@ -333,6 +333,20 @@ function showToast(msg) {
 window.addEventListener("load", buildGallery);
 const v = document.getElementById("mainVideo");
 v.addEventListener("loadeddata", () => v.style.opacity = 1);
+
+let doorOpened = false;
+
+function triggerDoorOpen() {
+  if (doorOpened) return;
+  doorOpened = true;
+  openDoor();
+}
+
+// 스크롤 (PC)
+window.addEventListener("wheel", triggerDoorOpen);
+
+// 모바일 터치 스크롤
+window.addEventListener("touchmove", triggerDoorOpen);
 </script>
 </body>
 </html>
