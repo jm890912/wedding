@@ -342,11 +342,14 @@ function triggerDoorOpen() {
   openDoor();
 }
 
-// 스크롤 (PC)
+// PC
 window.addEventListener("wheel", triggerDoorOpen);
 
-// 모바일 터치 스크롤
+// 모바일 터치 이동
 window.addEventListener("touchmove", triggerDoorOpen);
+
+// 모바일 스크롤 fallback (iOS 대응)
+window.addEventListener("scroll", triggerDoorOpen);
 </script>
 </body>
 </html>
