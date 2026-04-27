@@ -57,7 +57,7 @@ body { margin: 0; font-family: 'Noto Serif KR', serif; background: #f8f5f2; colo
   -webkit-user-drag: none;
 }
 
-/* 모달 스타일 */
+/* 🟢 이식된 오리지널 모달 스타일 */
 .modal {
   display: none;
   position: fixed;
@@ -133,6 +133,44 @@ body { margin: 0; font-family: 'Noto Serif KR', serif; background: #f8f5f2; colo
   font-family: 'Noto Serif KR', serif;
 }
 
+/* 축의금 섹션 스타일 */
+.chukui-section { margin-top: 48px; padding-top: 36px; border-top: 1px solid #f0ebe5; text-align: center; }
+.chukui-question { font-size: 18px; color: #333; line-height: 1.7; margin-bottom: 6px; }
+.chukui-sub { font-size: 13px; color: #bbb; margin-bottom: 24px; min-height: 20px; }
+.chukui-btn-wrap {
+  position: relative;
+  height: 70px; /* 초기 높이: 버튼 하나 크기 */
+  overflow: hidden;
+  border-radius: 16px;
+  background: #fdfcfb;
+  margin: 0 10px;
+  border: 1px solid #f0ebe5;
+  transition: height 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* 부드러운 확장 애니메이션 */
+}
+.chukui-btn-wrap.active {
+  height: 160px; 
+}
+.chukui-btn { padding: 12px 32px; border-radius: 50px; border: none; cursor: pointer; font-family: 'Noto Serif KR', serif; font-size: 17px; font-weight: 500; position: absolute; white-space: nowrap; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); touch-action: none; }
+.chukui-btn-yes { background: #c8a97e; color: white; box-shadow: 0 6px 20px rgba(200,169,126,0.4); left: 15%; top: 50%; transform: translateY(-50%); z-index: 10; }
+.chukui-btn-yes.full { left: 0 !important; top: 0 !important; width: 100% !important; height: 100% !important; transform: none !important; border-radius: 0 !important; font-size: 32px !important; display: flex; align-items: center; justify-content: center; z-index: 1000; }
+.chukui-btn-no { background: white; color: #999; border: 1.5px solid #eee; right: 15%; top: 50%; transform: translateY(-50%); z-index: 100; }
+.chukui-btn-no.escaped { right: auto; transform: none; transition: left 0.15s ease, top 0.15s ease; }
+@keyframes wobbleEsc { 0%, 100% { transform: rotate(0deg); } 30% { transform: rotate(-6deg); } 70% { transform: rotate(6deg); } }
+.chukui-btn-no.wobble { animation: wobbleEsc 0.2s ease; }
+
+.account-wrap { overflow: hidden; max-height: 0; opacity: 0; transition: max-height 1s ease, opacity 0.8s ease; }
+.account-wrap.show { max-height: 800px; opacity: 1; }
+.account-card { position: relative; margin: 20px 10px; background: #f8f5f2; padding: 24px 20px; border-radius: 16px; text-align: center; }
+.account-card-title {
+  font-size: 18px;
+  letter-spacing: 2px;
+  color: #000000;
+  margin-bottom: 20px;
+}
+.account-person { font-size: 15px; font-weight: 500; color: #333; margin-bottom: 8px; }
+.account-number { font-size: 17px; font-weight: 300; color: #555; margin-bottom: 24px; line-height: 1.6; }
+.copy-btn { background: white; border: 1.5px solid #ddd; padding: 11px 22px; border-radius: 50px; font-size: 14px; color: #777; cursor: pointer; margin: 4px; }
+
 .toast { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(50, 50, 50, 0.9); color: #fff; padding: 12px 24px; border-radius: 12px; font-size: 15px; z-index: 10001; opacity: 0; transition: opacity 0.3s; pointer-events: none; white-space: nowrap; }
 .toast.show { opacity: 1; }
 </style>
@@ -173,7 +211,7 @@ body { margin: 0; font-family: 'Noto Serif KR', serif; background: #f8f5f2; colo
     </div>
   </div>
 
-  <div class="dday-wrap" id="ddayWrap" data-aos="fade-up">
+  <div class="dday-wrap" id="ddayWrap" data-aos="fade-up" >
     <div class="dday-label" id="weddingLabel">WEDDING DAY</div>
     <div class="dday-badge" id="ddayBadge"></div>
     <div class="dday-sub" id="weddingDate">2026년 5월 9일 토요일</div>
@@ -181,6 +219,28 @@ body { margin: 0; font-family: 'Noto Serif KR', serif; background: #f8f5f2; colo
 
   <div class="gallery-slider">
     <div class="gallery-track" id="galleryTrack"></div>
+  </div>
+
+  <div class="chukui-section" data-aos="fade-up">
+    <div class="chukui-question" id="chukuiQuestion">마음을 전하시겠어요?</div>
+    <div class="chukui-sub" id="chukuiSub">가벼운 마음으로 선택해주세요.</div>
+
+    <div class="chukui-btn-wrap" id="chukuiBtnWrap">
+      <button class="chukui-btn chukui-btn-yes" id="btnYes">Yes</button>
+      <button class="chukui-btn chukui-btn-no" id="btnNo">No</button>
+    </div>
+
+    <div class="account-wrap" id="accountWrap">
+      <div class="account-card" id="targetCard">
+        <div class="account-card-title">마음전하실 곳</div>
+        <div class="account-person">신랑 한재명</div>
+        <div class="account-number" id="accountGroom">신한은행 110-238-106268</div>
+        <div class="account-person">신부 안은지</div>
+        <div class="account-number" id="accountBride">카카오뱅크 3333-01-6849995</div>
+        <button class="copy-btn" onclick="copyAccount('groom')">신랑 계좌 복사</button>
+        <button class="copy-btn" onclick="copyAccount('bride')">신부 계좌 복사</button>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -198,6 +258,7 @@ body { margin: 0; font-family: 'Noto Serif KR', serif; background: #f8f5f2; colo
 </div>
 
 <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
 <script>
 AOS.init({ duration: 1000 });
 
@@ -207,7 +268,47 @@ let autoSlideOffset = 0;
 let autoSlideRAF = null;
 const autoSlideSpeed = 0.6;
 
+let escapeCount = 0;
+const maxEscapes = 6;
+let noEscaped = false;
+let done = false;
+let overlapTurn = Math.floor(Math.random() * 3) + 2; 
+let isOverlappedNow = false;
+
+const funnyComments = ["어.. 잠깐만요 🤔", "재고해주십시오. 🙇‍♀️", "정말요...? 😮", "사실 전하고 싶잖아요 😏", "과거를 잊은자에게 미래는 없다...🔫", "잘못누르셨죠? 😅"];
+let remainingComments = [...funnyComments];
+
+const btnNo = document.getElementById('btnNo');
+const btnYes = document.getElementById('btnYes');
+const chukuiSub = document.getElementById('chukuiSub');
+const chukuiBtnWrap = document.getElementById('chukuiBtnWrap');
+const accountWrap = document.getElementById('accountWrap');
 const toastEl = document.getElementById('toast');
+
+function onNoClick(e) {
+  if (e) e.preventDefault();
+  if (done) return;
+  
+  if (isOverlappedNow) {
+    chukuiSub.textContent = "아깝...!";
+    chukuiSub.style.color = "#c8a97e";
+  } else {
+    // 멘트가 다 떨어졌으면 다시 채움
+    if (remainingComments.length === 0) {
+      remainingComments = [...funnyComments];
+    }
+    
+    // 랜덤 추출 및 제거
+    const randomIndex = Math.floor(Math.random() * remainingComments.length);
+    const selectedComment = remainingComments.splice(randomIndex, 1)[0];
+    
+    chukuiSub.textContent = selectedComment;
+    chukuiSub.style.color = "#bbb";
+  }
+  runAway();
+}
+
+/* ... runAway / copyAccount / EventListeners 나머지 로직 동일 ... */
 
 function openDoor() {
   document.getElementById("leftDoor").classList.add("open");
@@ -330,13 +431,94 @@ function showToast(msg) {
   setTimeout(() => toastEl.classList.remove('show'), 2000);
 }
 
+function runAway() {
+  escapeCount++;
+  
+  // 🟢 처음 No를 누를 때 영역 확장
+  if (!noEscaped) {
+    chukuiBtnWrap.classList.add('active'); 
+    noEscaped = true;
+    btnNo.style.right = 'auto';
+    btnNo.classList.add('escaped');
+  }
+
+  // 확장 애니메이션 시간을 고려해 약간의 지연 후 위치 계산 (영역 크기 반영)
+  setTimeout(() => {
+    const wrapW = chukuiBtnWrap.offsetWidth;
+    const wrapH = chukuiBtnWrap.offsetHeight;
+    const btnW = btnNo.offsetWidth;
+    const btnH = btnNo.offsetHeight;
+
+    // Yes 버튼 커지는 비율 0.4로 상향
+    btnYes.style.transform = `translateY(-50%) scale(${1 + (escapeCount * 0.4)})`;
+
+    let newL, newT;
+    if (escapeCount + 1 === overlapTurn) {
+      const yesRect = btnYes.getBoundingClientRect();
+      const wrapRect = chukuiBtnWrap.getBoundingClientRect();
+      newL = (yesRect.left - wrapRect.left) + (yesRect.width * 0.45);
+      newT = (yesRect.top - wrapRect.top) + (yesRect.height * 0.35);
+      isOverlappedNow = true;
+    } else {
+      newL = Math.random() * (wrapW - btnW - 20) + 10;
+      newT = Math.random() * (wrapH - btnH - 20) + 10;
+      isOverlappedNow = false;
+    }
+
+    btnNo.style.left = newL + 'px';
+    btnNo.style.top = newT + 'px';
+    btnNo.classList.remove('wobble');
+    void btnNo.offsetWidth;
+    btnNo.classList.add('wobble');
+
+    if (escapeCount > maxEscapes) {
+      btnNo.style.display = 'none';
+      btnYes.classList.add('full');
+      btnYes.textContent = 'YES or YES';
+      const q = document.getElementById('chukuiQuestion');
+  q.textContent = "답은 정해져 있어 너는 대답만 하면 돼";
+      chukuiSub.textContent = '트와이스 (TWICE)';
+      done = true;
+    }
+  }, 50); // 짧은 지연을 주어 레이아웃 계산 보정
+}
+
+function copyAccount(who) {
+  const el = document.getElementById(who === 'groom' ? 'accountGroom' : 'accountBride');
+  const num = el.innerText.replace(/[^0-9]/g, "");
+  navigator.clipboard.writeText(num).then(() => {
+    showToast(who === 'groom' ? "신랑 계좌 복사 완료✔" : "신부 계좌 복사 완료✔");
+  });
+}
+
+btnYes.addEventListener('click', () => {
+  showToast("사랑합니다❤️");
+  document.getElementById('chukuiQuestion').style.display = 'none';
+  document.getElementById('chukuiSub').style.display = 'none';
+  document.getElementById('chukuiBtnWrap').style.display = 'none';
+  accountWrap.classList.add('show');
+  setTimeout(() => {
+    document.getElementById('targetCard').scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }, 300);
+});
+
+btnNo.addEventListener('touchstart', onNoClick, { passive: false });
+btnNo.addEventListener('click', onNoClick);
+
 window.addEventListener("load", buildGallery);
 const v = document.getElementById("mainVideo");
 v.addEventListener("loadeddata", () => v.style.opacity = 1);
 
 let doorOpened = false;
+let userInteracted = false;
+
+// 사용자 실제 터치 감지
+window.addEventListener("touchstart", () => {
+  userInteracted = true;
+}, { once: true });
 
 function triggerDoorOpen() {
+  if (!userInteracted) return; // 🔥 핵심
   if (doorOpened) return;
   doorOpened = true;
   openDoor();
@@ -345,10 +527,10 @@ function triggerDoorOpen() {
 // PC
 window.addEventListener("wheel", triggerDoorOpen);
 
-// 모바일 터치 이동
+// 모바일
 window.addEventListener("touchmove", triggerDoorOpen);
 
-// 모바일 스크롤 fallback (iOS 대응)
+// fallback
 window.addEventListener("scroll", triggerDoorOpen);
 </script>
 </body>
